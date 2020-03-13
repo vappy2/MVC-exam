@@ -10,6 +10,7 @@ Class User
     public $firstname;
     public $lastname;
     public $picture;
+    public $photo;
 
     public $errors = [];
 
@@ -149,7 +150,7 @@ Class User
                 ':password' => $hashedPassword,
                 ':firstname' => $data['firstname'],
                 ':lastname' => $data['lastname'],
-                ':picture' => $data['picture']
+                ':picture' => $_FILES['photo']['name']
             ))) {
                 return true;
             } else {
@@ -217,6 +218,18 @@ Class User
         return false;
     }
 
+    public function upload()
+    {
+        if (isset($_FILES['photo']) && !empty($_FILES['photo']['name'])) {
+            $tmp_name = $_FILES['photo']['tmp_name'];
+            $current_dir = realpath(dirname(__FILE__));
+            $final_name = $current_dir . '/../uploads/' . $_FILES['photo']['name'];
+            if (move_uploaded_file($tmp_name, $final_name)) {
+                echo('fichier uploadé');
+            }
+        }
+    }
+
     public function deco()
     {
         if(!empty($_SESSION['user_id']))
@@ -224,26 +237,5 @@ Class User
             session_destroy();
         }
     }
-    /*
-    public function login($data)
-    {
-        if ($this->validate($data)) {
-            $dbh = Connection::get();
-            $sql = "select password from users where login = :login limit 1";
-            $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-            $sth->execute(array(
-                ':login' => $data['login']
-            ));
-            $storedPassword = $sth->fetchColumn();
-            if (password_verify($data['password'], $storedPassword)) {
-                return true;
 
-            } else {
-                // ERROR
-                $this->errors[] = 'CASSE TOI !';
-            }
-        }
-        return false;
-    }
-    */
 }

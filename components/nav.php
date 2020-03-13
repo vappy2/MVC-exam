@@ -18,7 +18,6 @@
                 <a href="./index.php?controller=groups&action=liste">list groupe</a>
                 <a href="./index.php?controller=users&action=deco">deco</a>';
         }
-
         ?>
 
 
