@@ -9,7 +9,7 @@ Class User
     public $password;
     public $firstname;
     public $lastname;
-    public $photo;
+    public $picture;
 
     public $errors = [];
 
@@ -39,6 +39,7 @@ Class User
             $this->password = $user->password;
             $this->firstname = $user->firstname;
             $this->lastname = $user->lastname;
+            $this->picture = $user->picture;
 
         }
     }
@@ -141,14 +142,14 @@ Class User
             $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
             /* syntaxe avec preparedStatements */
             $dbh = Connection::get();
-            $sql = "insert into users (login, password, firstname, lastname, photo) values (:login, :password , :firstname, :lastname, :photo)";
+            $sql = "insert into users (login, password, firstname, lastname, picture) values (:login, :password , :firstname, :lastname, :picture)";
             $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             if ($sth->execute(array(
                 ':login' => $data['login'],
                 ':password' => $hashedPassword,
                 ':firstname' => $data['firstname'],
                 ':lastname' => $data['lastname'],
-                ':photo' => $data['photo']
+                ':picture' => $data['picture']
             ))) {
                 return true;
             } else {
@@ -192,7 +193,7 @@ Class User
     {
         if ($this->validate($data)) {
             $dbh = Connection::get();
-            $sql = "select id, password, login, firstname, lastname from users where login = :login limit 1";
+            $sql = "select id, password, login, firstname, lastname, picture from users where login = :login limit 1";
             $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             $sth->execute(array(
                 ':login' => $data['login'],
@@ -204,6 +205,7 @@ Class User
                 $_SESSION['user_login'] = $user->login;
                 $_SESSION['user_firstname'] = $user->firstname;
                 $_SESSION['user_lastname'] = $user->lastname;
+                $_SESSION['user_picture'] = $user->picture;
                 return true;
 
             } else {

@@ -48,6 +48,18 @@ $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
             </fieldset>
             <input type="submit" value="Envoyer" class="button-primary">
         </form>
+
+        <img src="<img src="<?php echo ('./uploads/'.$_SESSION['user_picture']) ?>">">
+
+        <form method="post" action="./index.php?controller=users&action=editPicture" id="userRegisterForm">
+            <fieldset>
+                <label for="photo">Photo</label>
+                <input type="file" name="photo" value="" id="photo" accept="image/png, image/jpeg, image/gif" required="required">
+                <input type="hidden" name="picture" value="<?= ($_FILES['photo']['name'])?>">
+
+            </fieldset>
+            <input type="submit" value="Envoyer" class="button-primary">
+        </form>
     </div>
 
     <div class="row">

@@ -77,7 +77,7 @@ try {
                 $current_dir = realpath(dirname(__FILE__));
                 $final_name = $current_dir . '/../uploads/' . $_FILES['photo']['name'];
                 if (move_uploaded_file($tmp_name, $final_name)) {
-                    echo('<hr/>fichier uploadé TMTC<hr/>');
+                    echo('fichier uploadé');
                 }
             }
 

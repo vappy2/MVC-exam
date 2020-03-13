@@ -18,6 +18,10 @@ $users = isset($_SESSION['users']) ? $_SESSION['users'] : [];
         .errors {
             color: #ff5555;
         }
+
+        img{
+            max-height: 40px;
+        }
     </style>
 </head>
 
@@ -33,6 +37,7 @@ $users = isset($_SESSION['users']) ? $_SESSION['users'] : [];
                 <th>id</th>
                 <th>login</th>
                 <th>password</th>
+                <th>picture</th>
 
             </tr>
             </thead>
@@ -44,6 +49,7 @@ $users = isset($_SESSION['users']) ? $_SESSION['users'] : [];
                     <td><?= $user->id ?></td>
                     <td><?= $user->login ?></td>
                     <td><?= $user->password ?></td>
+                    <td><img src="<?php echo ('./uploads/'.$user->picture) ?>"></td>
                 </tr>
                 <?php
             }
