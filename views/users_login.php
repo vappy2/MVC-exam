@@ -64,6 +64,10 @@ $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
             $_POST :
             <pre><?php print_r($_POST) ?></pre>
         </div>
+        <div class="one-half column">
+            $_FILES :
+            <pre><?php print_r($_FILES) ?></pre>
+        </div>
     </div>
 
 </div>

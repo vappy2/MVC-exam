@@ -82,4 +82,22 @@ Class Message
             }
         }
     }
+
+    public function deleted($data) {
+
+        $dbh = Connection::get();
+        $sql = "delete from messages where id = :id";
+        $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        if ($sth->execute(array(
+            ':id' => $data['id']
+        ))) {
+            return true;
+        } else {
+            // ERROR
+            // put errors in $session
+            $this->errors['Le message ne peut pas être ajouté, recommence!'];
+            echo "Message pas supprimé";
+        }
+
+    }
 }

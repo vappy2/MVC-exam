@@ -1,5 +1,4 @@
 <?php
-session_start();
 $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
 ?>
 
@@ -35,18 +34,28 @@ $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
             ?>
         </ul>
 
-        <form method="post" action="./index.php?controller=users&action=signon" id="userRegisterForm">
+        <form method="post" action="./index.php?controller=users&action=signon" id="userRegisterForm" enctype="multipart/form-data">
             <fieldset>
                 <legend>user register</legend>
-                <label for="userLogin">login</label>
-                <input type="text" id="userLogin" name="login" value="<?php echo !empty($_POST['login']) ? ($_POST['login']) : '' ?>">
-                <label for="userPassword">password</label>
-                <input type="password" id="userLogin" name="password" value="">
                 <label for="userFirstname">firstname</label>
                 <input type="text" id="userFirstname" name="firstname" value="<?php echo !empty($_POST['firstname']) ? ($_POST['firstname']) : '' ?>">
                 <label for="userLastname">lastname</label>
                 <input type="text" id="userLastname" name="lastname" value="<?php echo !empty($_POST['lastname']) ? ($_POST['lastname']) : '' ?>">
+                <label for="userLogin">login</label>
+                <input type="text" id="userLogin" name="login" value="<?php echo !empty($_POST['login']) ? ($_POST['login']) : '' ?>">
+                <label for="userPassword">password</label>
+                <input type="password" id="userLogin" name="password" value="">
             </fieldset>
+
+            <fieldset>
+                <label for="texte">texte</label>
+                <input type="text" name="texte" value="<?php echo !empty($_POST['texte']) ? ($_POST['texte']) : '' ?>">
+            </fieldset>
+            <fieldset>
+                <label for="photo">Photo</label>
+                <input type="file" name="photo" value="" id="photo" accept="image/png, image/jpeg, image/gif" required="required">
+            </fieldset>
+
             <input type="submit" value="Envoyer" class="button-primary">
         </form>
     </div>
@@ -67,6 +76,10 @@ $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
         <div class="one-half column">
             $_POST :
             <pre><?php print_r($_POST) ?></pre>
+        </div>
+        <div class="one-half column">
+            $_FILES :
+            <pre><?php print_r($_FILES) ?></pre>
         </div>
     </div>
 

@@ -9,9 +9,17 @@ try {
     // tableau d'erreurs initial, vide
     $errors = [];
 
-    $action = isset($_GET['action']) ? $_GET['action'] : '';
+    //$action = isset($_GET['action']) ? $_GET['action'] : '';
 
-    $message = new Message();
+    //$message = new Message();
+
+
+    $publicActions = [
+        'index',
+        'add',
+        'jsonlist',
+        'deleted'
+    ];
 
 
     function index(){
@@ -22,29 +30,41 @@ try {
         include('./views/messages_list.php');
     }
 
-    switch ($action){
-        case 'add':
-            if ($message->add($_POST)){
-                index();
-                die;
-            }
-            $_SESSION['errors'] = $messages->errors;
-            include('./views/add_message.php');
-            break;
-
-
-        case 'jsonlist':
-            $users = $user->findAll();
-            header("Access-Control-Allow-Origin: *");
-            header('Content-type: application/json; charset=UTF-8');
-            echo json_encode($messages);
-            break;
-
-
-         default;
+    function add(){
+        $message = new Message();
+        if ($message->add($_POST)){
             index();
-            break;
+            die;
+        }
+        include('./views/add_message.php');
     }
+
+    function jsonlist(){
+        $message = new Message();
+        $messages = $message->findAll();
+        header("Access-Control-Allow-Origin: *");
+        header('Content-type: application/json; charset=UTF-8');
+        echo json_encode($messages);
+    }
+
+    function deleted(){
+        $message = new Message();
+        if ($message->deleted($_POST)){
+            $_SESSION['errors'] = [];
+            index();
+            die;
+        }
+        $_SESSION['errors'] = $message->errors;
+        index();
+    }
+
+
+    if (in_array($action,$publicActions)){
+        call_user_func($action);
+    }else{
+        call_user_func('index');;
+    }
+
 } catch (Exception $e) {
     echo('cacaboudin exception');
     print_r($e);

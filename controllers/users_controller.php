@@ -14,6 +14,7 @@ try {
         'signon',
         'jsonlist',
         'liste',
+        'edit',
         'deco'
     ];
 
@@ -70,6 +71,16 @@ try {
             $_SESSION['errors'] = [];
             include('./views/users_register.php');
         }else{
+
+            if (isset($_FILES['photo']) && !empty($_FILES['photo']['name'])) {
+                $tmp_name = $_FILES['photo']['tmp_name'];
+                $current_dir = realpath(dirname(__FILE__));
+                $final_name = $current_dir . '/../uploads/' . $_FILES['photo']['name'];
+                if (move_uploaded_file($tmp_name, $final_name)) {
+                    echo('<hr/>fichier uploadé TMTC<hr/>');
+                }
+            }
+
             if ($user->save($_POST)){
                 $_SESSION['errors'] = [];
                 include('./views/users_list.php');
@@ -77,6 +88,22 @@ try {
             }
             $_SESSION['errors'] = $user->errors;
             include('./views/users_register.php');
+        }
+    }
+
+    function edit(){
+        $user = new User();
+        if (empty($_POST)){
+            $_SESSION['errors'] = [];
+            include('./views/users_edit.php');
+        }else{
+            if ($user->edit($_POST)){
+                $_SESSION['errors'] = [];
+                include('./views/users_list.php');
+                die;
+            }
+            $_SESSION['errors'] = $user->errors;
+            include('./views/users_edit.php');
         }
     }
 
@@ -88,69 +115,6 @@ try {
     }
 
 
-
-
-
-
-    /*switch ($action){
-        case 'login':
-
-            if (empty($_POST)) {
-                $_SESSION['errors'] = [];
-                header('Location: ../views/users_login.php');
-            }else{
-                if ($user->login($_POST)){
-                    $_SESSION['errors'] = [];
-                    $users = $user->findAll();
-                    $_SESSION['users'] = $users;
-                    header('Location: ../views/add_message.php');
-                    die;
-                }
-                // put errors in $session
-                $_SESSION['errors'] = $user->errors;
-                header('Location: ../views/users_login.php');
-            }
-            break;
-
-        case 'list':
-            $_SESSION['errors'] = [];
-            $users = $user->findAll();
-            $_SESSION['users'] = $users;
-            header('Location: ../views/users_list.php');
-            break;
-
-        case 'jsonlist':
-            $users = $user->findAll();
-            header("Access-Control-Allow-Origin: *");
-            header('Content-type: application/json; charset=UTF-8');
-            echo json_encode($users);
-            break;
-
-        case 'deco':
-            $users = $user->deco();
-            header('Location: ../views/users_login.php');
-            break;
-
-        case 'signon';
-
-            if (empty($_POST)){
-                $_SESSION['errors'] = [];
-                header('Location: ../views/users_register.php');
-            }else{
-                if ($user->save($_POST)){
-                    $_SESSION['errors'] = [];
-                    header('Location: ../views/users_list.php');
-                    die;
-                }
-                $_SESSION['errors'] = $user->errors;
-                header('Location: ../views/users_register.php');
-            }
-
-            break;
-        default:
-            header('Location: ../views/users_login.php');
-            break;
-    }*/
 } catch (Exception $e) {
     echo('cacaboudin exception');
     print_r($e);

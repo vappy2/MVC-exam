@@ -1,6 +1,5 @@
 <?php
 $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
-$messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : [];
 ?>
 
 <html>
@@ -26,36 +25,29 @@ $messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : [];
 <div class="container">
 
     <div class="row">
-        <h2>Messages</h2>
-        <table class="u-full-width">
-            <thead>
-            <tr>
-                <th>content</th>
-                <th>created</th>
-                <th>user_id</th>
-                <th>action</th>
-            </tr>
-            </thead>
-            <tbody>
+
+        <ul class="errors">
             <?php
-            foreach ($messages as $message) {
-                ?>
-                <tr>
-                    <td><?= $message->content ?></td>
-                    <td><?= $message->created ?></td>
-                    <td><?= $message->user_id ?></td>
-                    <td>
-                        <form method="post" action="./index.php?controller=messages&action=deleted" id="<?= $message->id ?>">
-                            <input type="submit" value="Supprimer" >
-                            <input type="hidden" value="<?= $message->id ?>" name="id">
-                        </form>
-                    </td>
-                </tr>
-                <?php
+            foreach ($errors as $error) {
+                echo("<li>" . $error . "</li>");
             }
             ?>
-            </tbody>
-        </table>
+        </ul>
+
+        <form method="post" action="./index.php?controller=users&action=edit" id="userRegisterForm">
+            <fieldset>
+                <legend>user edit</legend>
+                <label for="userFirstname">firstname</label>
+                <input type="text" id="userFirstname" name="firstname" value="<?php echo $_SESSION['user_firstname'] ?>">
+                <label for="userLastname">lastname</label>
+                <input type="text" id="userLastname" name="lastname" value="<?php echo $_SESSION['user_lastname'] ?>">
+                <label for="userLogin">login</label>
+                <input type="text" id="userLogin" name="login" value="<?php echo $_SESSION['user_login'] ?>">
+                <label for="userPassword">password (requis pour modification)</label>
+                <input type="password" id="userLogin" name="password" value="">
+            </fieldset>
+            <input type="submit" value="Envoyer" class="button-primary">
+        </form>
     </div>
 
     <div class="row">

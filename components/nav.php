@@ -12,7 +12,9 @@
 
         if(!empty($_SESSION['user_id']))
         {
-            echo'<a href="./index.php?controller=users&action=deco">deco</a>';
+            echo'
+                <a href="./index.php?controller=users&action=edit">edit</a>
+                <a href="./index.php?controller=users&action=deco">deco</a>';
         }
 
         ?>

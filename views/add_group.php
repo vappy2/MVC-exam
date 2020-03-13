@@ -1,6 +1,7 @@
 <?php
+session_start();
 $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
-$users = isset($_SESSION['users']) ? $_SESSION['users'] : [];
+$messages = isset($_SESSION['groups']) ? $_SESSION['groups'] : [];
 ?>
 
 <html>
@@ -22,44 +23,34 @@ $users = isset($_SESSION['users']) ? $_SESSION['users'] : [];
 </head>
 
 <body>
-<?php require_once('./components/nav.php') ?>
+
 <div class="container">
 
     <div class="row">
-        <h2>Users</h2>
-        <table class="u-full-width">
-            <thead>
-            <tr>
-                <th>id</th>
-                <th>login</th>
-                <th>password</th>
 
-            </tr>
-            </thead>
-            <tbody>
+        <ul class="errors">
             <?php
-            foreach ($users as $user) {
-                ?>
-                <tr>
-                    <td><?= $user->id ?></td>
-                    <td><?= $user->login ?></td>
-                    <td><?= $user->password ?></td>
-                </tr>
-                <?php
+            foreach ($errors as $error) {
+                echo("<li>" . $error . "</li>");
             }
             ?>
-            </tbody>
-        </table>
+        </ul>
+
+        <form method="post" action="../controllers/groups_controller.php?action=add" id="addGroupForm">
+            <fieldset>
+                <legend>Add Groups</legend>
+                <label for="titleGroup">Title</label>
+                <input id="titleGroup" name="title"/>
+            </fieldset>
+            <input type="submit" value="Envoyer" class="button-primary">
+            <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_id']; ?>">
+        </form>
     </div>
 
     <div class="row">
         <div class="column">
             $_SESSION
-            Tableau JSON
-            <pre><?php echo json_encode($_SESSION,JSON_PRETTY_PRINT) ?></pre>
-            Tableau Array
             <pre><?php print_r($_SESSION) ?></pre>
-
         </div>
 
     </div>
@@ -72,10 +63,6 @@ $users = isset($_SESSION['users']) ? $_SESSION['users'] : [];
         <div class="one-half column">
             $_POST :
             <pre><?php print_r($_POST) ?></pre>
-        </div>
-        <div class="one-half column">
-            $_FILES :
-            <pre><?php print_r($_FILES) ?></pre>
         </div>
     </div>
 

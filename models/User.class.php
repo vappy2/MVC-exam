@@ -9,6 +9,7 @@ Class User
     public $password;
     public $firstname;
     public $lastname;
+    public $photo;
 
     public $errors = [];
 
@@ -140,13 +141,14 @@ Class User
             $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
             /* syntaxe avec preparedStatements */
             $dbh = Connection::get();
-            $sql = "insert into users (login, password, firstname, lastname) values (:login, :password , :firstname, :lastname)";
+            $sql = "insert into users (login, password, firstname, lastname, photo) values (:login, :password , :firstname, :lastname, :photo)";
             $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             if ($sth->execute(array(
                 ':login' => $data['login'],
                 ':password' => $hashedPassword,
                 ':firstname' => $data['firstname'],
-                ':lastname' => $data['lastname']
+                ':lastname' => $data['lastname'],
+                ':photo' => $data['photo']
             ))) {
                 return true;
             } else {
@@ -158,19 +160,50 @@ Class User
         return false;
     }
 
+    public function edit($data)
+    {
+        if ($this->validate($data)) {
+            if(isset($data['id']) && !empty($data['id'])){
+                // update
+            }
+            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+            /* syntaxe avec preparedStatements */
+            $dbh = Connection::get();
+            $sql = "update users set login = :login, password = :password , firstname = :firstname, lastname = :lastname where id = :id";
+            $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+            if ($sth->execute(array(
+                ':id' => $_SESSION['user_id'],
+                ':login' => $data['login'],
+                ':password' => $hashedPassword,
+                ':firstname' => $data['firstname'],
+                ':lastname' => $data['lastname']
+            ))) {
+                return true;
+            } else {
+                // ERROR
+                // put errors in $session
+                echo 'pas reussi';
+            }
+        }
+        return false;
+    }
+
     public function login($data)
     {
         if ($this->validate($data)) {
             $dbh = Connection::get();
-            $sql = "select id, password from users where login = :login limit 1";
+            $sql = "select id, password, login, firstname, lastname from users where login = :login limit 1";
             $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             $sth->execute(array(
-                ':login' => $data['login']
+                ':login' => $data['login'],
             ));
             $user = $sth->fetch(PDO::FETCH_OBJ);
             //$storedPassword = $sth->fetchColumn();
             if (password_verify($data['password'], $user->password)) {
                 $_SESSION['user_id'] = $user->id;
+                $_SESSION['user_login'] = $user->login;
+                $_SESSION['user_firstname'] = $user->firstname;
+                $_SESSION['user_lastname'] = $user->lastname;
                 return true;
 
             } else {

@@ -1,5 +1,4 @@
 <?php
-session_start();
 $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
 $messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : [];
 ?>
@@ -51,6 +50,14 @@ $messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : [];
         <div class="column">
             $_SESSION
             <pre><?php print_r($_SESSION) ?></pre>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="column">
+            $_SESSION USER
+            <pre><?php print_r($_SESSION ['user_id']) ?></pre>
         </div>
 
     </div>
