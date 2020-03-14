@@ -40,7 +40,7 @@ try{
             $_SESSION['errors'] = [];
             include('./views/groups_add.php');
         } else {
-            if ($group->add($_POST)) {
+            if ($group->addGroup($_POST)) {
                 $_SESSION['errors'] = [];
                 $groups = $group->findAll();
                 $_SESSION['groups'] = $groups;

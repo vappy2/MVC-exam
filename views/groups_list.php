@@ -54,7 +54,9 @@ $groups = isset($_SESSION['groups']) ? $_SESSION['groups'] : [];
             ?>
             </tbody>
         </table>
+        <a href="./index.php?controller=groups&action=add">add groupe</a>
     </div>
+
 
     <div class="row">
         <div class="column">

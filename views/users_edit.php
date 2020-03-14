@@ -38,6 +38,8 @@ $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
             ?>
         </ul>
 
+        <!--Récupérre les données actuelles de l'utilisateur via $_SESSION pour les mettre dans les inputs-->
+
         <form method="post" action="./index.php?controller=users&action=edit" id="userRegisterForm" enctype="multipart/form-data">
             <fieldset>
                 <legend>user edit</legend>

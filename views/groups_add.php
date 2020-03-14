@@ -41,6 +41,17 @@ $messages = isset($_SESSION['groups']) ? $_SESSION['groups'] : [];
                 <legend>Add Groups</legend>
                 <label for="titleGroup">Title</label>
                 <input id="titleGroup" name="title"/>
+
+                <!--Ajout du choix d'utilisateur pour le groupe ajouté-->
+                <!--<label for="user">Utilisateur</label>
+                <?php
+/*                foreach ($_SESSION['users'] as $user) {
+                    print_r($user);*/?>
+
+                   <input type="checkbox" name="<?/* $user['login']*/?>">
+                --><?php
+/*                }
+                */?>
             </fieldset>
             <input type="submit" value="Envoyer" class="button-primary">
             <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_id']; ?>">

@@ -219,6 +219,8 @@ Class User
         return false;
     }
 
+
+    /*Permet l'upload de l'image de profil*/
     public function upload()
     {
         if (isset($_FILES['photo']) && !empty($_FILES['photo']['name'])) {

@@ -35,6 +35,7 @@ $messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : [];
             ?>
         </ul>
 
+
         <form method="post" action="./index.php?controller=messages&action=add" id="addMessageForm">
             <fieldset>
                 <legend>add message</legend>

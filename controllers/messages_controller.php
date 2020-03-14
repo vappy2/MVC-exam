@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__.'/../models/Message.class.php');
+require_once(__DIR__.'/../models/Group.class.php');
 //demarrage session
 session_start();
 
@@ -32,10 +33,13 @@ try {
 
     function add(){
         $message = new Message();
+        $group = new Group();
         if ($message->add($_POST)){
             index();
             die;
         }
+        $groups = $group->findId();
+        $_SESSION['user_group'] = $groups;
         include('./views/message_add.php');
     }
 

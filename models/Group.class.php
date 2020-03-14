@@ -25,18 +25,6 @@ class Group
         }
     }
 
-/*    public function findAll($data)
-    {
-        $dbh = Connexion::get();
-        $sql = "select * from group where id = :id";
-        $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(
-            ':id' => $data['id']
-        ));
-        $groups = $sth->fetchAll(PDO::FETCH_CLASS);
-        return $groups;
-    }*/
-
     public function findAll()
     {
         $dbh = Connection::get();
@@ -45,6 +33,8 @@ class Group
         $groups = $stmt->fetchAll(PDO::FETCH_CLASS);
         return $groups;
     }
+
+    /*Ne fonctionne pas*/
 
     public function findGroup($data){
         $dbh = Connection::get();
@@ -72,7 +62,7 @@ class Group
         return true;
     }
 
-    public function add($data) {
+    public function addGroup($data) {
 
         if ($this->validate($data)){
             $dbh = Connection::get();
@@ -107,5 +97,18 @@ class Group
                 $this->errors['Il y a eu une erreur lors de la modification du nom du groupe.'];
             }
         }
+    }
+
+
+    /*findId permet de récuppérer les groupes où appartient l'utilisateur (ne fonctionne pas)*/
+    public function findId(){
+        $dbh = Connection::get();
+        $sql = "select id_groups from groups where id_user = :id_user";
+        $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR =>PDO::CURSOR_FWDONLY));
+        $sth->execute(array(
+            ':id_user' => $_SESSION['user_id']
+        ));
+        $groups = $sth->fetchAll(PDO::FETCH_CLASS);
+        return $groups;
     }
 }
