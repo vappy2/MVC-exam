@@ -34,7 +34,7 @@ try {
                 $_SESSION['errors'] = [];
                 $users = $user->findAll();
                 $_SESSION['users'] = $users;
-                include('./views/add_message.php');
+                include('./views/message_add.php');
                 die;
             }
             // put errors in $session

@@ -8,7 +8,7 @@ session_start();
 try{
 
     //Si  action n'existe pas alors on l'a crée en l'initialisant à vide
-    $action = isset($_GET['action']) ? $_GET['action'] : '';
+    //$action = isset($_GET['action']) ? $_GET['action'] : '';
 
     //Case modification d'un groupe
     function update(){
@@ -16,16 +16,16 @@ try{
 
         if(empty($_POST)){
             $_SESSION['errors'] = [];
-            include('./views/edit_group.php');
+            include('./views/groups_edit.php');
         }else{
             // Si ton model group se sauvegarde dans la base de donnée, alors tu vides ton tableau d'erreurs et tu affiches la liste des groups
             if ($group->update($_POST)){
                 $_SESSION['errors'] = [];
-                include('./views/list_groups.php');
+                include('./views/groups_list.php');
                 die;
             } // Par défaut, on affiche le message d'erreur et on rediriges vers la page add_groups
             $_SESSION['errors'] = $group->errors;
-            include('./views/edit_group.php');
+            include('./views/groups_edit.php');
         }
     }
 
@@ -37,17 +37,17 @@ try{
         //Si $_POST est vide alors on vide notre tableau d'erreur et redirige vers la même page
         if (empty($_POST)) {
             $_SESSION['errors'] = [];
-            include('./views/add_group.php');
+            include('./views/groups_add.php');
         } else {
-            if ($group->update($_POST)) {
+            if ($group->add($_POST)) {
                 $_SESSION['errors'] = [];
-                $users = $group->findAll();
-                $_SESSION['users'] = $users;
-                include('./views/add_group.php');
+                $groups = $group->findAll();
+                $_SESSION['groups'] = $groups;
+                include('./views/groups_add.php');
                 die;
             }
             $_SESSION['errors'] = $group->errors;
-            include('./views/add_group.php');
+            include('./views/groups_add.php');
         }
     }
 
@@ -73,7 +73,7 @@ try{
     {
         call_user_func($action);
     }else{
-        call_user_func("login");
+        call_user_func("liste");
     }
 
 }catch (Exception $e) {

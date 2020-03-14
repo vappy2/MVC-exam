@@ -36,7 +36,7 @@ try {
             index();
             die;
         }
-        include('./views/add_message.php');
+        include('./views/message_add.php');
     }
 
     function jsonlist(){

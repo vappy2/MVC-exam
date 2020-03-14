@@ -1,6 +1,5 @@
 <?php
 $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
-$messages = isset($_SESSION['groups']) ? $_SESSION['groups'] : [];
 ?>
 
 <html>
@@ -22,7 +21,7 @@ $messages = isset($_SESSION['groups']) ? $_SESSION['groups'] : [];
 </head>
 
 <body>
-
+<?php require_once('./components/nav.php') ?>
 <div class="container">
 
     <div class="row">
@@ -35,14 +34,13 @@ $messages = isset($_SESSION['groups']) ? $_SESSION['groups'] : [];
             ?>
         </ul>
 
-        <form method="post" action="../controllers/groups_controller.php?action=add" id="addGroupForm">
+        <form method="post" action="../controllers/groups_controller.php?action=update" id="updateGroupForm">
             <fieldset>
-                <legend>Add Groups</legend>
+                <legend>Edit</legend>
                 <label for="titleGroup">Title</label>
-                <input id="titleGroup" name="title"/>
+                <input type="text" id="titleGroup" name="title" value="" placeholder="Entrer le nouveau nom"/>
             </fieldset>
             <input type="submit" value="Envoyer" class="button-primary">
-            <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_id']; ?>">
         </form>
     </div>
 

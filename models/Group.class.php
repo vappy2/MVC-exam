@@ -1,4 +1,5 @@
 <?php
+require_once('./classes/Connection.class.php');
 
 class Group
 {
@@ -24,7 +25,7 @@ class Group
         }
     }
 
-    public function findAll($data)
+/*    public function findAll($data)
     {
         $dbh = Connexion::get();
         $sql = "select * from group where id = :id";
@@ -33,6 +34,15 @@ class Group
             ':id' => $data['id']
         ));
         $groups = $sth->fetchAll(PDO::FETCH_CLASS);
+        return $groups;
+    }*/
+
+    public function findAll()
+    {
+        $dbh = Connection::get();
+        $stmt = $dbh->query("select * from groups");
+        // recupere les users et fout le resultat dans une variable sous forme de tableau de tableaux
+        $groups = $stmt->fetchAll(PDO::FETCH_CLASS);
         return $groups;
     }
 
