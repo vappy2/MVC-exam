@@ -9,6 +9,7 @@ Class User
     public $password;
     public $firstname;
     public $lastname;
+    public $picture;
     public $photo;
 
     public $errors = [];
@@ -39,6 +40,7 @@ Class User
             $this->password = $user->password;
             $this->firstname = $user->firstname;
             $this->lastname = $user->lastname;
+            $this->picture = $user->picture;
 
         }
     }
@@ -141,14 +143,14 @@ Class User
             $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
             /* syntaxe avec preparedStatements */
             $dbh = Connection::get();
-            $sql = "insert into users (login, password, firstname, lastname, photo) values (:login, :password , :firstname, :lastname, :photo)";
+            $sql = "insert into users (login, password, firstname, lastname, picture) values (:login, :password , :firstname, :lastname, :picture)";
             $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             if ($sth->execute(array(
                 ':login' => $data['login'],
                 ':password' => $hashedPassword,
                 ':firstname' => $data['firstname'],
                 ':lastname' => $data['lastname'],
-                ':photo' => $data['photo']
+                ':picture' => $_FILES['photo']['name']
             ))) {
                 return true;
             } else {
@@ -169,14 +171,15 @@ Class User
             $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
             /* syntaxe avec preparedStatements */
             $dbh = Connection::get();
-            $sql = "update users set login = :login, password = :password , firstname = :firstname, lastname = :lastname where id = :id";
+            $sql = "update users set login = :login, password = :password , firstname = :firstname, lastname = :lastname, picture = :picture where id = :id";
             $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             if ($sth->execute(array(
                 ':id' => $_SESSION['user_id'],
                 ':login' => $data['login'],
                 ':password' => $hashedPassword,
                 ':firstname' => $data['firstname'],
-                ':lastname' => $data['lastname']
+                ':lastname' => $data['lastname'],
+                ':picture' => $_FILES['photo']['name']
             ))) {
                 return true;
             } else {
@@ -192,7 +195,7 @@ Class User
     {
         if ($this->validate($data)) {
             $dbh = Connection::get();
-            $sql = "select id, password, login, firstname, lastname from users where login = :login limit 1";
+            $sql = "select id, password, login, firstname, lastname, picture from users where login = :login limit 1";
             $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             $sth->execute(array(
                 ':login' => $data['login'],
@@ -204,6 +207,7 @@ Class User
                 $_SESSION['user_login'] = $user->login;
                 $_SESSION['user_firstname'] = $user->firstname;
                 $_SESSION['user_lastname'] = $user->lastname;
+                $_SESSION['user_picture'] = $user->picture;
                 return true;
 
             } else {
@@ -215,6 +219,20 @@ Class User
         return false;
     }
 
+
+    /*Permet l'upload de l'image de profil*/
+    public function upload()
+    {
+        if (isset($_FILES['photo']) && !empty($_FILES['photo']['name'])) {
+            $tmp_name = $_FILES['photo']['tmp_name'];
+            $current_dir = realpath(dirname(__FILE__));
+            $final_name = $current_dir . '/../uploads/' . $_FILES['photo']['name'];
+            if (move_uploaded_file($tmp_name, $final_name)) {
+                echo('fichier uploadé');
+            }
+        }
+    }
+
     public function deco()
     {
         if(!empty($_SESSION['user_id']))
@@ -222,26 +240,5 @@ Class User
             session_destroy();
         }
     }
-    /*
-    public function login($data)
-    {
-        if ($this->validate($data)) {
-            $dbh = Connection::get();
-            $sql = "select password from users where login = :login limit 1";
-            $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-            $sth->execute(array(
-                ':login' => $data['login']
-            ));
-            $storedPassword = $sth->fetchColumn();
-            if (password_verify($data['password'], $storedPassword)) {
-                return true;
 
-            } else {
-                // ERROR
-                $this->errors[] = 'CASSE TOI !';
-            }
-        }
-        return false;
-    }
-    */
 }

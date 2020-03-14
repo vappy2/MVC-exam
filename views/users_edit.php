@@ -17,6 +17,10 @@ $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
         .errors {
             color: #ff5555;
         }
+
+        img{
+            max-height: 40px;
+        }
     </style>
 </head>
 
@@ -34,7 +38,9 @@ $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
             ?>
         </ul>
 
-        <form method="post" action="./index.php?controller=users&action=edit" id="userRegisterForm">
+        <!--Récupérre les données actuelles de l'utilisateur via $_SESSION pour les mettre dans les inputs-->
+
+        <form method="post" action="./index.php?controller=users&action=edit" id="userRegisterForm" enctype="multipart/form-data">
             <fieldset>
                 <legend>user edit</legend>
                 <label for="userFirstname">firstname</label>
@@ -46,8 +52,17 @@ $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
                 <label for="userPassword">password (requis pour modification)</label>
                 <input type="password" id="userLogin" name="password" value="">
             </fieldset>
+            <img src="<?php echo ('./uploads/'.$_SESSION['user_picture']) ?>">
+            <fieldset>
+                <label for="photo">Photo</label>
+                <input type="file" name="photo" value="" id="photo" accept="image/png, image/jpeg, image/gif">
+            </fieldset>
             <input type="submit" value="Envoyer" class="button-primary">
         </form>
+
+
+
+
     </div>
 
     <div class="row">

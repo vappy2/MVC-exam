@@ -1,5 +1,4 @@
 <?php
-session_start();
 $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
 $groups = isset($_SESSION['groups']) ? $_SESSION['groups'] : [];
 ?>
@@ -41,15 +40,23 @@ $groups = isset($_SESSION['groups']) ? $_SESSION['groups'] : [];
             foreach ($groups as $group) {
                 ?>
                 <tr>
-                    <td><?= $group->id ?></td>
-                    <td><?= $group->title ?></td>
+                    <form method="post" action="./index.php?controller=groups&action=edit" id="<?= $group->id ?>">
+
+                    <td><input type="text" name="id" value="<?= $group->id ?>"></td>
+                    <td><input type="text" name="title" value="<?= $group->title ?>"></td>
+                    <td><input type="submit" value="Renommer" ></td>
+
+                    </form>
+
                 </tr>
                 <?php
             }
             ?>
             </tbody>
         </table>
+        <a href="./index.php?controller=groups&action=add">add groupe</a>
     </div>
+
 
     <div class="row">
         <div class="column">

@@ -1,7 +1,6 @@
 <?php
-session_start();
 $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
-$messages = isset($_SESSION['groups']) ? $_SESSION['groups'] : [];
+$messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : [];
 ?>
 
 <html>
@@ -23,7 +22,7 @@ $messages = isset($_SESSION['groups']) ? $_SESSION['groups'] : [];
 </head>
 
 <body>
-
+<?php require_once('./components/nav.php') ?>
 <div class="container">
 
     <div class="row">
@@ -36,11 +35,12 @@ $messages = isset($_SESSION['groups']) ? $_SESSION['groups'] : [];
             ?>
         </ul>
 
-        <form method="post" action="../controllers/groups_controller.php?action=add" id="addGroupForm">
+
+        <form method="post" action="./index.php?controller=messages&action=add" id="addMessageForm">
             <fieldset>
-                <legend>Add Groups</legend>
-                <label for="titleGroup">Title</label>
-                <input id="titleGroup" name="title"/>
+                <legend>add message</legend>
+                <label for="contentMessage">Content</label>
+                <textarea id="contentMessage" name="content"></textarea>
             </fieldset>
             <input type="submit" value="Envoyer" class="button-primary">
             <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_id']; ?>">
@@ -51,6 +51,14 @@ $messages = isset($_SESSION['groups']) ? $_SESSION['groups'] : [];
         <div class="column">
             $_SESSION
             <pre><?php print_r($_SESSION) ?></pre>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="column">
+            $_SESSION USER
+            <pre><?php print_r($_SESSION ['user_id']) ?></pre>
         </div>
 
     </div>

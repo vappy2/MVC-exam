@@ -1,6 +1,6 @@
 <?php
-session_start();
 $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
+$messages = isset($_SESSION['groups']) ? $_SESSION['groups'] : [];
 ?>
 
 <html>
@@ -22,6 +22,8 @@ $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
 </head>
 
 <body>
+<?php require_once('./components/nav.php') ?>
+
 <div class="container">
 
     <div class="row">
@@ -34,13 +36,25 @@ $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
             ?>
         </ul>
 
-        <form method="post" action="../controllers/groups_controller.php?action=update" id="updateGroupForm">
+        <form method="post" action="./index.php?controller=groups&action=add" id="addGroupForm">
             <fieldset>
-                <legend>Edit</legend>
+                <legend>Add Groups</legend>
                 <label for="titleGroup">Title</label>
-                <input type="text" id="titleGroup" name="title" value="" placeholder="Entrer le nouveau nom"/>
+                <input id="titleGroup" name="title"/>
+
+                <!--Ajout du choix d'utilisateur pour le groupe ajouté-->
+                <!--<label for="user">Utilisateur</label>
+                <?php
+/*                foreach ($_SESSION['users'] as $user) {
+                    print_r($user);*/?>
+
+                   <input type="checkbox" name="<?/* $user['login']*/?>">
+                --><?php
+/*                }
+                */?>
             </fieldset>
             <input type="submit" value="Envoyer" class="button-primary">
+            <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_id']; ?>">
         </form>
     </div>
 

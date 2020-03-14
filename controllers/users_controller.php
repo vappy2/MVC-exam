@@ -34,7 +34,7 @@ try {
                 $_SESSION['errors'] = [];
                 $users = $user->findAll();
                 $_SESSION['users'] = $users;
-                include('./views/add_message.php');
+                include('./views/message_add.php');
                 die;
             }
             // put errors in $session
@@ -72,18 +72,11 @@ try {
             include('./views/users_register.php');
         }else{
 
-            if (isset($_FILES['photo']) && !empty($_FILES['photo']['name'])) {
-                $tmp_name = $_FILES['photo']['tmp_name'];
-                $current_dir = realpath(dirname(__FILE__));
-                $final_name = $current_dir . '/../uploads/' . $_FILES['photo']['name'];
-                if (move_uploaded_file($tmp_name, $final_name)) {
-                    echo('<hr/>fichier uploadé TMTC<hr/>');
-                }
-            }
+            $user->upload();
 
             if ($user->save($_POST)){
                 $_SESSION['errors'] = [];
-                include('./views/users_list.php');
+                header('Location:./index.php?controller=users&action=liste');
                 die;
             }
             $_SESSION['errors'] = $user->errors;
@@ -97,9 +90,12 @@ try {
             $_SESSION['errors'] = [];
             include('./views/users_edit.php');
         }else{
+
+            $user->upload();
+
             if ($user->edit($_POST)){
                 $_SESSION['errors'] = [];
-                include('./views/users_list.php');
+                header('Location:./index.php?controller=users&action=liste');
                 die;
             }
             $_SESSION['errors'] = $user->errors;
