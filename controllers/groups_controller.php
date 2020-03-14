@@ -11,23 +11,24 @@ try{
     //$action = isset($_GET['action']) ? $_GET['action'] : '';
 
     //Case modification d'un groupe
-    function update(){
+    function edit(){
         $group = new Group();
-
         if(empty($_POST)){
             $_SESSION['errors'] = [];
-            include('./views/groups_edit.php');
+            include('./views/groups_list.php');
         }else{
             // Si ton model group se sauvegarde dans la base de donnée, alors tu vides ton tableau d'erreurs et tu affiches la liste des groups
-            if ($group->update($_POST)){
+            if ($group->edit($_POST)){
                 $_SESSION['errors'] = [];
-                include('./views/groups_list.php');
+                //include('./views/groups_list.php');
+                header('Location:./index.php?controller=groups&action=liste');
                 die;
             } // Par défaut, on affiche le message d'erreur et on rediriges vers la page add_groups
             $_SESSION['errors'] = $group->errors;
-            include('./views/groups_edit.php');
+            include('./views/groups_list.php');
         }
     }
+
 
     //Case création de groupe
     function add()
@@ -43,7 +44,7 @@ try{
                 $_SESSION['errors'] = [];
                 $groups = $group->findAll();
                 $_SESSION['groups'] = $groups;
-                include('./views/groups_add.php');
+                include('./views/groups_list.php');
                 die;
             }
             $_SESSION['errors'] = $group->errors;
@@ -64,7 +65,7 @@ try{
 
     $availableActions = [
         'add',
-        'update',
+        'edit',
         'liste'
     ];
 

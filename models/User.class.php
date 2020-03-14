@@ -171,14 +171,15 @@ Class User
             $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
             /* syntaxe avec preparedStatements */
             $dbh = Connection::get();
-            $sql = "update users set login = :login, password = :password , firstname = :firstname, lastname = :lastname where id = :id";
+            $sql = "update users set login = :login, password = :password , firstname = :firstname, lastname = :lastname, picture = :picture where id = :id";
             $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             if ($sth->execute(array(
                 ':id' => $_SESSION['user_id'],
                 ':login' => $data['login'],
                 ':password' => $hashedPassword,
                 ':firstname' => $data['firstname'],
-                ':lastname' => $data['lastname']
+                ':lastname' => $data['lastname'],
+                ':picture' => $_FILES['photo']['name']
             ))) {
                 return true;
             } else {

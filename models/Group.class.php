@@ -9,7 +9,7 @@ class Group
     public function get($id = null)
     {
         if (!is_null($id)){
-            $dbh = Connexion::get();
+            $dbh = Connection::get();
             //print_r($dbh);
 
             $stmt = $dbh->prepare("select * from groups where id = :id limit 1");
@@ -47,7 +47,7 @@ class Group
     }
 
     public function findGroup($data){
-        $dbh = Connexion::get();
+        $dbh = Connection::get();
         $sql = "select g.title from groups g left join groups_users gu on g.id = gu.id_groups right join users u on gu.id_user = u.id where id_user = :id_user";
         $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR =>PDO::CURSOR_FWDONLY));
         $sth->execute(array(
@@ -62,9 +62,9 @@ class Group
         $this->errors = [];
 
         /* required fields */
-        if (!isset($data['content'])) {
+        /*if (!isset($data['content'])) {
             $this->errors[] = 'Tu n\'a pas donné de nom à ton groupe';
-        }
+        }*/
 
         if (count($this->errors) > 0) {
             return false;
@@ -75,7 +75,7 @@ class Group
     public function add($data) {
 
         if ($this->validate($data)){
-            $dbh = Connexion::get();
+            $dbh = Connection::get();
             $sql = "insert into groups (title) values (:title)";
             $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             if ($sth->execute(array(
@@ -90,14 +90,15 @@ class Group
         }
     }
 
-    public function update($data){
+    public function edit($data){
 
         if ($this->validate($data)){
-            $dbh = Connexion::get();
-            $sql = "update groups set (title) values (:title)";
+            $dbh = Connection::get();
+            $sql = "update groups set title = :title where id = :id";
             $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             if ($sth->execute(array(
-                ':title' => $data['title']
+                ':title' => $data['title'],
+                ':id' => $data['id']
             ))) {
                 return true;
             } else {

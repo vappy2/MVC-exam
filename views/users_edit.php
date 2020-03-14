@@ -38,7 +38,7 @@ $errors = isset($_SESSION['errors']) ? $_SESSION['errors'] : [];
             ?>
         </ul>
 
-        <form method="post" action="./index.php?controller=users&action=edit" id="userRegisterForm">
+        <form method="post" action="./index.php?controller=users&action=edit" id="userRegisterForm" enctype="multipart/form-data">
             <fieldset>
                 <legend>user edit</legend>
                 <label for="userFirstname">firstname</label>

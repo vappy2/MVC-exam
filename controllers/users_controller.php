@@ -95,7 +95,7 @@ try {
 
             if ($user->edit($_POST)){
                 $_SESSION['errors'] = [];
-                include('./views/users_list.php');
+                header('Location:./index.php?controller=users&action=liste');
                 die;
             }
             $_SESSION['errors'] = $user->errors;
